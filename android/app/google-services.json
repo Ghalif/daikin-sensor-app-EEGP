@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "165008817300",
+    "firebase_url": "https://testiot-f98a1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "testiot-f98a1",
+    "storage_bucket": "testiot-f98a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165008817300:android:51ea3aae8d85dc90b9c881",
+        "android_client_info": {
+          "package_name": "co.ismailghalif.daikin_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165008817300-8irvsn82m9bjcr9l99n51kttnlk0tqs2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2k0JKYtFnFZaUUd374Ef2JUjhadjV3Ts"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165008817300-8irvsn82m9bjcr9l99n51kttnlk0tqs2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
