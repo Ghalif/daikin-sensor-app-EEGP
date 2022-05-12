@@ -19,7 +19,7 @@ unsigned long sendDataPrevMillis = 0;
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
-
+//ksjadjaksjdasj EDIT EDIT
 // Variables to save date and time
 String formattedDate;
 String dayStamp;
