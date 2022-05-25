@@ -19,7 +19,7 @@ unsigned long sendDataPrevMillis = 0;
 // Define NTP Client to get time
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
-//ksjadjaksjdasj EDIT EDIT
+
 // Variables to save date and time
 String formattedDate;
 String dayStamp;
@@ -27,8 +27,10 @@ String timeStamp;
 
 /* 1. Define the WiFi credentials */
 
-#define WIFI_SSID "Chus :3"
-#define WIFI_PASSWORD "wifichus"
+#define WIFI_SSID "Poco F1"
+#define WIFI_PASSWORD "cham1235"
+//#define WIFI_SSID "Chus :3"
+//#define WIFI_PASSWORD "wifichus"
 //#define WIFI_SSID "AndroidAP"
 //#define WIFI_PASSWORD "04578412"
 //For the following credentials, see examples/Authentications/SignInAsUser/EmailPassword/EmailPassword.ino
@@ -53,10 +55,8 @@ DHT dht(DHTPIN, DHTTYPE);
 
 //#define VOLT_CAL 148.7
 //#define CURRENT_CAL 62.6
-#define vCalibration 146.7
-#define currCalibration 16.1
-//#define VOLT_CAL 146.7
-//#define CURRENT_CAL 16.1
+#define vCalibration 83
+#define currCalibration 62.6
 //EnergyMonitor emon1;             // Create an instance
 EnergyMonitor emon;
 
@@ -155,12 +155,13 @@ void setup()
 
   Firebase.setDoubleDigits(5);
   //--------------------vibration
+  
   while (!Serial)
     delay(10); // will pause Zero, Leonardo, etc until serial console opens
 
   Serial.println("Adafruit MPU6050 test!");
 
-  /*Try to initialize!
+  // Try to initialize!
   if (!mpu.begin()) {
     Serial.println("Failed to find MPU6050 chip");
     while (1) {
@@ -227,8 +228,6 @@ void setup()
       Serial.println("5 Hz");
       break;
   }
-   */
-  
   //------------------------------curent sensor pin
   Serial.println("");
   delay(100);
@@ -242,6 +241,8 @@ void setup()
   // Initialize a NTPClient to get time
   timeClient.begin();
   timeClient.setTimeOffset(28800);
+
+  
 }
 
 
@@ -316,7 +317,7 @@ void loop()
         if (on_state == false) {
           on_state = true;
           hall_count += 1.0;
-         Serial.print("Magnets :");
+          Serial.print("Magnets :");
           //Serial.println(hall_count);
         }
       } else {
@@ -324,7 +325,7 @@ void loop()
       }
     }
     float end_time = micros();
-    float time_passed = ((end_time - start) / 1000000.0);
+    float time_passed = ((end_time - start) / 560000.0);
     Serial.print("Time Passed: ");
     Serial.print(time_passed);
     Serial.println("s");
@@ -344,6 +345,8 @@ void loop()
     String mystrAC_EXP1 = String (sen3) + "°C";
     if (Firebase.RTDB.setString(&fbdo, AC_EXP1_stamp, mystrAC_EXP1)) //Print AC_EXP1
     {
+      Serial.print("AC_EXP1: ");
+      Serial.println(sen3);
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -359,6 +362,8 @@ void loop()
     String mystrAC_EXP2 = String (sen0) + "°C";
     if (Firebase.RTDB.setString(&fbdo, AC_EXP2_stamp, mystrAC_EXP2)) //Print AC_EXP2
     {
+      Serial.print("AC_EXP2: ");
+      Serial.println(sen0);
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -374,6 +379,8 @@ void loop()
     String mystrInd_AC = String (sen2) + "°C";
     if (Firebase.RTDB.setString(&fbdo, Ind_AC_stamp, mystrInd_AC)) //Print Ind_AC
     {
+      Serial.print("Ind_AC: ");
+      Serial.println(sen2);
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -389,6 +396,8 @@ void loop()
     String mystrTempComp = String (sen1) + "°C";
     if (Firebase.RTDB.setString(&fbdo, tempComp_stamp, mystrTempComp)) //Print TempComp
     {
+      Serial.print("TempComp: ");
+      Serial.println(sen1);
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -418,6 +427,7 @@ void loop()
     String mystrCO2 = "CO2= " + String (co2ppm) + " PPM";
     if (Firebase.RTDB.setString(&fbdo, co2_stamp, mystrCO2)) //Print CO2
     {
+      Serial.println("CO2 " + (co2ppm));
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -434,9 +444,10 @@ void loop()
     String mystrCurrent = String (emon.Irms, 4) + "Irms";
     if (Firebase.RTDB.setString(&fbdo, current_stamp, mystrCurrent)) //Print Current
     {
+      Serial.print("Current: ");
+      Serial.println(currentDraw);
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
-      Serial.println(currentDraw);
       delay(50);
     }
     else
@@ -449,9 +460,10 @@ void loop()
     String mystrVoltage = String (emon.Vrms, 2) + "Vrms";
     if (Firebase.RTDB.setString(&fbdo, voltage_stamp, mystrVoltage)) //Print Current
     {
+      Serial.print("Voltage: ");
+      Serial.println(supplyVoltage, 2);
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
-      Serial.println(emon.Vrms, 2);
       delay(50);
     }
     else
@@ -468,6 +480,10 @@ void loop()
     String mystrVibrX = String (a.acceleration.x) + "m/s^2";
     if (Firebase.RTDB.setString(&fbdo, vibrX_stamp, mystrVibrX)) //Print Vibration X
     {
+      Serial.print(" X: ");
+      Serial.print(a.acceleration.x);
+      Serial.println(" m/s^2");
+      
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -484,6 +500,10 @@ void loop()
     String mystrVibrY = String (a.acceleration.y) + "m/s^2";
     if (Firebase.RTDB.setString(&fbdo, vibrY_stamp, mystrVibrY)) //Print Temperature
     {
+      Serial.print(" Y: ");
+      Serial.print(a.acceleration.y);
+      Serial.println(" m/s^2");
+      
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -500,6 +520,10 @@ void loop()
     String mystrVibrZ = String (a.acceleration.z) + "m/s^2";
     if (Firebase.RTDB.setString(&fbdo, vibrZ_stamp, mystrVibrZ)) //Print Temperature
     {
+      Serial.print(" Z: ");
+      Serial.print(a.acceleration.z);
+      Serial.println(" m/s^2");
+      
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -518,11 +542,29 @@ void loop()
     String temperature_stamp = "Database/" + dayStamp + "/" + timeStamp + "/Temperature";
     String mystrTemperature = String (t) + "°C";
 
-    //String humid_stamp = "Database/" + dayStamp +"/"+ timeStamp + "/Humidity";
-    //String mystrHumidity = String (h);
-
     if (Firebase.RTDB.setString(&fbdo, temperature_stamp, mystrTemperature)) //Print Temperature
     {
+
+      Serial.print("DHT Temperature: ");
+      Serial.println(t);
+      Serial.println("PATH: " + fbdo.dataPath());
+      Serial.println("TYPE: " + fbdo.dataType());
+      delay(50);
+    }
+    else
+    {
+      Serial.println("FAILED");
+      Serial.println("REASON: " + fbdo.errorReason());
+    }
+
+    //-----Humidity
+    String humid_stamp = "Database/" + dayStamp +"/"+ timeStamp + "/Humidity";
+    String mystrHumidity = String (h);
+
+    if (Firebase.RTDB.setString(&fbdo, humid_stamp, mystrHumidity)) //Print Humidity
+    {
+      Serial.print("DHT humidity: ");
+      Serial.println(h);
       Serial.println("PATH: " + fbdo.dataPath());
       Serial.println("TYPE: " + fbdo.dataType());
       delay(50);
@@ -536,22 +578,3 @@ void loop()
 
 
 
-    //-----RPM
-    String rpm_stamp = "Database/" + dayStamp + "/" + timeStamp + "/RPM";
-    String mystrRPM = String (rpm_val) + " RPM";
-    if (Firebase.RTDB.setString(&fbdo, rpm_stamp, mystrRPM)) //Print RPM
-    {
-      Serial.println("PATH: " + fbdo.dataPath());
-      Serial.println("TYPE: " + fbdo.dataType());
-      delay(5);
-    }
-    else
-    {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo.errorReason());
-    }
-
-    delay(1000);
-    //to print every minute, delay(60000)
-  }
-}
